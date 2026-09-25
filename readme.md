@@ -6,6 +6,8 @@
 
 1. Собрать топологию сети.(login/pass - cisco)
 [схема](https://github.com/01eg8/diplom.net/blob/main/diplom.38.aaa.pkt)
+[схема без ААА](https://github.com/01eg8/diplom.net/blob/main/diplom.33.pkt)
+(у меня иногда глючило)
 2. Заполнить таблицу распределения подсетей и адресов.
 [таблица](https://github.com/01eg8/diplom.net/blob/main/ip-address-table.add.xlsx)
 3. Настройть на коммутаторах доступа порты.
