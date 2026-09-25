@@ -1,0 +1,129 @@
+Router#sh run
+Building configuration...
+
+Current configuration : 1420 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Router
+!
+!
+!
+!
+!
+!
+!
+aaa new-model
+!
+aaa authentication login default group tacacs+ local 
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+username cisco password 0 cisco
+!
+!
+license udi pid CISCO2811/K9 sn FTX1017U730-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/0.100
+ encapsulation dot1Q 100
+ ip address 192.168.10.17 255.255.255.192
+!
+interface FastEthernet0/0.400
+ encapsulation dot1Q 400
+ ip address 192.168.40.1 255.255.255.0
+!
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+ip route 0.0.0.0 0.0.0.0 192.168.40.252 
+!
+ip flow-export version 9
+!
+!
+!
+!
+tacacs-server host 192.168.10.1 key cisco
+!
+!
+!
+logging trap debugging
+logging 192.168.10.1
+telephony-service
+ max-ephones 40
+ max-dn 40
+ ip source-address 192.168.40.1 port 2000
+ auto assign 1 to 40
+!
+ephone-dn 1
+ number 101
+!
+ephone-dn 2
+ number 102
+!
+ephone 1
+ device-security-mode none
+ mac-address 000D.BD82.9662
+ type 7960
+ button 1:1
+!
+ephone 2
+ device-security-mode none
+ mac-address 0001.430A.4350
+ type 7960
+ button 1:2
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login authentication default
+!
+!
+ntp server 192.168.10.1
+!
+end
+
+
