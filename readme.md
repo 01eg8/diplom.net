@@ -17,10 +17,10 @@
 [core1](https://github.com/01eg8/diplom.net/blob/main/config_device/msw0.txt)
 [core2](https://github.com/01eg8/diplom.net/blob/main/config_device/msw1.txt)
 5. Настроить сервисы для распределения сетевых настроек.
-[image](https://github.com/01eg8/diplom.net/blob/main/pic/Screenshot%20from%202026-09-26%2000-16-13.png)
+![image](https://github.com/01eg8/diplom.net/blob/main/pic/Screenshot%20from%202026-09-26%2000-16-13.png)
 6. Настроить сервис БЛВС.
-[image](https://github.com/01eg8/diplom.net/blob/main/pic/Screenshot%20from%202026-09-26%2000-13-12.png)
-[image](https://github.com/01eg8/diplom.net/blob/main/pic/Screenshot%20from%202026-09-26%2000-13-33.png)
+![image](https://github.com/01eg8/diplom.net/blob/main/pic/Screenshot%20from%202026-09-26%2000-13-12.png)
+![image](https://github.com/01eg8/diplom.net/blob/main/pic/Screenshot%20from%202026-09-26%2000-13-33.png)
 7. На коммутаторах ядра запустить протокол маршрутизации ospf
 8. На каждом межсетевом экране настроить адресацию и три зоны: inside, outside, DMZ.
 [asa0](https://github.com/01eg8/diplom.net/blob/main/config_device/asa0.txt)
@@ -40,7 +40,7 @@
 17. Настройте БЛВС ТД филиала, подключить к ней ноутбук.
 18. Настройте на АСО интерфейсы для управления. 
 19. Настройте ip-телефоны, проверьте дозвон.
-[image](https://github.com/01eg8/diplom.net/blob/main/pic/6.2.png)
+![image](https://github.com/01eg8/diplom.net/blob/main/pic/6.2.png)
 
 
 Чем чреват чистый GRE:
