@@ -1,0 +1,260 @@
+core1#sh run
+Building configuration...
+
+Current configuration : 5426 bytes
+!
+version 12.2(37)SE1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname core1
+!
+!
+ip dhcp relay information trust-all
+!
+!
+!
+!
+!
+aaa new-model
+!
+aaa authentication login default group tacacs+ local 
+!
+!
+!
+!
+!
+!
+ip routing
+!
+!
+!
+!
+username cisco password 0 cisco
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip dhcp snooping vlan 100,200,300,400,500
+ip dhcp snooping
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree vlan 100,200,300,400,500 priority 24576
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ switchport trunk allowed vlan 100,200,300,400,500
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface FastEthernet0/1
+ switchport trunk allowed vlan 100,200,300,400,500
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ spanning-tree guard root
+!
+interface FastEthernet0/2
+ switchport trunk allowed vlan 100,200,300,400,500
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ spanning-tree guard root
+!
+interface FastEthernet0/3
+ switchport trunk allowed vlan 100,200,300,400,500
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface FastEthernet0/4
+ no switchport
+ ip address 10.1.0.1 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/5
+ ip dhcp snooping trust
+ switchport trunk allowed vlan 100,200,300,400,500
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ spanning-tree guard root
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+ switchport trunk allowed vlan 100,200,300,400,500
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan100
+ description mgmt
+ mac-address 0000.0c4c.3201
+ ip address 192.168.10.10 255.255.255.128
+ ip access-group 101 in
+ standby version 2
+ standby 100 ip 192.168.10.9
+ standby 100 priority 105
+ standby 100 preempt
+ standby 100 track FastEthernet0/4
+!
+interface Vlan200
+ description users
+ mac-address 0000.0c4c.3202
+ ip address 192.168.20.254 255.255.255.0
+ ip helper-address 192.168.10.1
+ ip access-group 102 in
+ standby version 2
+ standby 200 ip 192.168.20.252
+ standby 200 priority 105
+ standby 200 preempt
+ standby 200 track FastEthernet0/4
+!
+interface Vlan300
+ description wlan
+ mac-address 0000.0c4c.3203
+ ip address 192.168.30.254 255.255.255.0
+ ip helper-address 192.168.10.15
+ ip access-group 103 in
+ standby version 2
+ standby 300 ip 192.168.30.252
+ standby 300 priority 105
+ standby 300 preempt
+ standby 300 track FastEthernet0/4
+!
+interface Vlan400
+ description voip
+ mac-address 0000.0c4c.3204
+ ip address 192.168.40.254 255.255.255.0
+ ip helper-address 192.168.10.1
+ ip access-group 104 in
+ standby version 2
+ standby 400 ip 192.168.40.252
+ standby 400 priority 105
+ standby 400 preempt
+ standby 400 track FastEthernet0/4
+!
+interface Vlan500
+ description printer
+ mac-address 0000.0c4c.3205
+ ip address 192.168.50.126 255.255.255.128
+ ip helper-address 192.168.10.1
+ ip access-group 105 in
+ standby version 2
+ standby 500 ip 192.168.50.124
+ standby 500 priority 105
+ standby 500 preempt
+ standby 500 track FastEthernet0/4
+!
+router ospf 1
+ router-id 10.10.10.10
+ log-adjacency-changes
+ area 1 nssa no-summary
+ passive-interface default
+ no passive-interface FastEthernet0/4
+ no passive-interface Vlan100
+ network 10.1.0.0 0.0.0.3 area 1
+ network 192.168.10.0 0.0.0.127 area 1
+ network 192.168.20.0 0.0.0.255 area 1
+ network 192.168.30.0 0.0.0.255 area 1
+ network 192.168.40.0 0.0.0.255 area 1
+ network 192.168.50.0 0.0.0.127 area 1
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+access-list 102 permit ip 192.168.20.0 0.0.0.255 192.168.51.0 0.0.0.63
+access-list 102 permit ip 192.168.20.0 0.0.0.255 192.168.50.0 0.0.0.127
+access-list 102 permit ip 192.168.20.0 0.0.0.255 host 10.5.5.2
+access-list 102 permit ip 192.168.20.0 0.0.0.255 host 192.168.10.1
+access-list 102 permit udp any host 255.255.255.255
+access-list 102 deny ip any any
+access-list 103 deny ip 192.168.30.0 0.0.0.255 192.168.0.0 0.0.255.255
+access-list 103 deny ip 192.168.30.0 0.0.0.255 10.0.0.0 0.255.255.255
+access-list 103 permit udp any host 255.255.255.255
+access-list 103 permit ip any any
+access-list 104 permit ip 192.168.40.0 0.0.0.255 192.168.41.0 0.0.0.255
+access-list 104 permit ip 192.168.40.0 0.0.0.255 host 192.168.10.1
+access-list 104 permit udp any host 255.255.255.255
+access-list 104 deny ip any any
+access-list 105 permit ip 192.168.50.0 0.0.0.127 192.168.20.0 0.0.0.255
+access-list 105 permit ip 192.168.50.0 0.0.0.127 192.168.21.0 0.0.0.127
+access-list 105 permit ip 192.168.50.0 0.0.0.127 host 192.168.10.1
+access-list 105 permit udp any host 255.255.255.255
+access-list 105 deny ip any any
+!
+!
+tacacs-server host 192.168.10.1 key cisco
+!
+!
+!
+!
+logging 192.168.10.1
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login authentication default
+!
+!
+!
+ntp server 192.168.10.1
+!
+end
+

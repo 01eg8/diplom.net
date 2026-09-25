@@ -1,0 +1,135 @@
+access1#sh run
+Building configuration...
+
+Current configuration : 2297 bytes
+!
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname access1
+!
+!
+!
+!
+!
+aaa new-model
+!
+aaa authentication login default group tacacs+ local 
+!
+!
+!
+!
+!
+username cisco privilege 1 password 0 cisco
+!
+ip arp inspection vlan 100,200,300,400
+!
+ip dhcp snooping vlan 100,200,300,400
+no ip dhcp snooping information option
+ip dhcp snooping
+!
+spanning-tree mode rapid-pvst
+spanning-tree portfast default
+spanning-tree portfast bpduguard default
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+ switchport access vlan 200
+ switchport mode access
+ switchport voice vlan 400
+ switchport port-security
+ switchport port-security maximum 3
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+ switchport port-security mac-address sticky 0001.C956.9643
+ switchport port-security mac-address sticky 000D.BD82.9662
+!
+interface FastEthernet0/2
+ switchport trunk allowed vlan 100,200,300,400
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport mode trunk
+!
+interface FastEthernet0/3
+ switchport trunk allowed vlan 100,200,300,400
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport mode trunk
+!
+interface FastEthernet0/4
+ switchport trunk native vlan 100
+ switchport trunk allowed vlan 100,300
+ switchport mode trunk
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan100
+ description mgmt
+ ip address 192.168.10.12 255.255.255.128
+!
+logging 192.168.10.1
+tacacs-server host 192.168.10.1 key cisco
+!
+!
+!
+line con 0
+ login
+!
+line vty 0 4
+ login authentication default
+line vty 5 15
+!
+!
+!
+ntp server 192.168.10.1
+!
+end
+

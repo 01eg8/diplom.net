@@ -1,0 +1,182 @@
+remote-router#sh run
+Building configuration...
+
+Current configuration : 4084 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname remote-router
+!
+!
+!
+!
+!
+!
+!
+aaa new-model
+!
+aaa authentication login default group tacacs+ local 
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+username cisco password 0 cisco
+!
+!
+license udi pid CISCO1941/K9 sn FTX1524LK1K-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode rapid-pvst
+!
+!
+!
+!
+!
+!
+interface Tunnel1
+ ip address 10.10.10.2 255.255.255.252
+ mtu 1476
+ tunnel source GigabitEthernet0/0
+ tunnel destination 172.1.0.2
+!
+!
+interface Tunnel2
+ ip address 10.10.11.2 255.255.255.252
+ mtu 1476
+ tunnel source GigabitEthernet0/0
+ tunnel destination 172.2.0.2
+!
+!
+interface GigabitEthernet0/0
+ ip address 172.3.0.2 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1.101
+ encapsulation dot1Q 101
+ ip address 192.168.11.10 255.255.255.192
+ ip helper-address 192.168.10.1
+ ip access-group 111 in
+!
+interface GigabitEthernet0/1.201
+ encapsulation dot1Q 201
+ ip address 192.168.21.126 255.255.255.128
+ ip helper-address 192.168.10.1
+ ip access-group 112 in
+!
+interface GigabitEthernet0/1.301
+ encapsulation dot1Q 301
+ ip address 192.168.31.254 255.255.255.0
+ ip helper-address 192.168.10.15
+ ip access-group 113 in
+!
+interface GigabitEthernet0/1.401
+ encapsulation dot1Q 401
+ ip address 192.168.41.62 255.255.255.192
+ ip helper-address 192.168.10.1
+ ip helper-address 192.168.40.1
+ ip access-group 114 in
+!
+interface GigabitEthernet0/1.501
+ encapsulation dot1Q 501
+ ip address 192.168.51.62 255.255.255.192
+ ip helper-address 192.168.10.1
+ ip access-group 115 in
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 7.7.7.7
+ log-adjacency-changes
+ passive-interface GigabitEthernet0/1.101
+ passive-interface GigabitEthernet0/1.201
+ passive-interface GigabitEthernet0/1.301
+ passive-interface GigabitEthernet0/1.401
+ passive-interface GigabitEthernet0/1.501
+ network 10.10.11.0 0.0.0.3 area 2
+ network 10.10.10.0 0.0.0.3 area 2
+ network 192.168.11.0 0.0.0.63 area 2
+ network 192.168.21.0 0.0.0.127 area 2
+ network 192.168.31.0 0.0.0.255 area 2
+ network 192.168.41.0 0.0.0.63 area 2
+ network 192.168.51.0 0.0.0.63 area 2
+!
+ip classless
+ip route 172.1.0.0 255.255.255.252 172.3.0.1 
+ip route 172.2.0.0 255.255.255.252 172.3.0.1 
+!
+ip flow-export version 9
+!
+!
+access-list 111 permit ip 192.168.11.0 0.0.0.63 192.168.0.0 0.0.255.255
+access-list 111 permit ip 192.168.11.0 0.0.0.63 10.0.0.0 0.255.255.255
+access-list 111 permit udp any host 255.255.255.255
+access-list 111 deny ip any any
+access-list 112 permit ip 192.168.21.0 0.0.0.127 192.168.51.0 0.0.0.63
+access-list 112 permit ip 192.168.21.0 0.0.0.127 192.168.50.0 0.0.0.63
+access-list 112 permit ip 192.168.21.0 0.0.0.127 host 10.5.5.2
+access-list 112 permit ip 192.168.21.0 0.0.0.127 host 192.168.10.1
+access-list 112 permit udp any host 255.255.255.255
+access-list 112 deny ip any any
+access-list 114 permit ip 192.168.41.0 0.0.0.63 192.168.40.0 0.0.0.255
+access-list 114 permit ip 192.168.41.0 0.0.0.63 host 192.168.10.1
+access-list 114 permit ip 192.168.41.0 0.0.0.63 host 192.168.40.1
+access-list 114 permit udp any host 255.255.255.255
+access-list 114 deny ip any any
+access-list 115 permit ip 192.168.51.0 0.0.0.63 192.168.21.0 0.0.0.127
+access-list 115 permit ip 192.168.51.0 0.0.0.63 192.168.20.0 0.0.0.255
+access-list 115 permit ip 192.168.51.0 0.0.0.63 host 192.168.10.1
+access-list 115 permit udp any host 255.255.255.255
+access-list 115 deny ip any any
+access-list 113 permit ip 192.168.31.0 0.0.0.255 192.168.51.0 0.0.0.63
+access-list 113 permit ip 192.168.31.0 0.0.0.255 192.168.50.0 0.0.0.63
+access-list 113 permit ip 192.168.31.0 0.0.0.255 host 10.5.5.2
+access-list 113 permit ip 192.168.31.0 0.0.0.255 host 192.168.10.15
+access-list 113 permit udp any host 255.255.255.255
+access-list 113 deny ip any any
+!
+!
+tacacs-server host 192.168.10.1 key cisco
+!
+!
+!
+logging 192.168.10.1
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login authentication default
+!
+!
+ntp server 192.168.10.1
+!
+end
+

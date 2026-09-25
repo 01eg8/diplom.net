@@ -1,0 +1,133 @@
+border2#sh run
+Building configuration...
+
+Current configuration : 1886 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname border2
+!
+!
+!
+!
+!
+!
+!
+aaa new-model
+!
+aaa authentication login default group tacacs+ local 
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+username cisco password 0 cisco
+!
+!
+license udi pid CISCO1941/K9 sn FTX15246Y51-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode rapid-pvst
+!
+!
+!
+!
+!
+!
+interface Loopback1
+ ip address 192.168.12.2 255.255.255.255
+!
+interface Tunnel1
+ ip address 10.10.11.1 255.255.255.252
+ mtu 1476
+ tunnel source GigabitEthernet0/0
+ tunnel destination 172.3.0.2
+!
+!
+interface GigabitEthernet0/0
+ ip address 172.2.0.2 255.255.255.252
+ ip nat outside
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ ip address 10.0.1.1 255.255.255.252
+ ip ospf cost 150
+ ip nat inside
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1/0
+ ip address 10.0.2.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf priority 1
+ ip nat inside
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 20.20.20.20
+ log-adjacency-changes
+ area 1 nssa no-summary
+ network 10.0.1.0 0.0.0.3 area 1
+ network 10.0.2.0 0.0.0.3 area 0
+ network 192.168.12.2 0.0.0.0 area 0
+ network 10.10.11.0 0.0.0.3 area 2
+!
+router bgp 65200
+ bgp log-neighbor-changes
+ no synchronization
+ neighbor 172.2.0.1 remote-as 65100
+ network 172.2.0.0 mask 255.255.255.252
+!
+ip nat inside source list NAT interface GigabitEthernet0/0 overload
+ip nat inside source static tcp 10.5.5.2 80 172.2.0.2 80 
+ip classless
+!
+ip flow-export version 9
+!
+!
+ip access-list extended NAT
+ permit ip 192.168.20.0 0.0.0.255 any
+ permit ip 192.168.30.0 0.0.0.255 any
+ permit ip host 10.5.5.2 host 8.8.8.8
+!
+!
+tacacs-server host 192.168.10.1 key cisco
+!
+!
+!
+logging 192.168.10.1
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login authentication default
+!
+!
+ntp server 192.168.10.1
+!
+end
+
