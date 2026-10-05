@@ -73,4 +73,4 @@
 
 [Тестирование](https://github.com/01eg8/diplom.net/blob/main/test.md)
 
-[Правки]
+[Правки](https://github.com/01eg8/diplom.net/blob/main/pravki.md)
